@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+            href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="py-5 text-center">
+        <h2>식품 정보 상세</h2>
+    </div>
+
+    <!-- 추가 -->
+    <h2 th:if="${param.status}" th:text="'저장 완료'"></h2>
+
+    <div>
+        <label for="foodId">식품 ID</label>
+        <input type="text" id="foodId" name="foodId" class="form-control" value="1" th:value="${food.id}" readonly>
+    </div>
+    <div>
+        <label for="foodName">식품명</label>
+        <input type="text" id="foodName" name="foodName" class="form-control" value="식품A" th:value="${food.foodName}" readonly>
+    </div>
+    <div>
+        <label for="quantity">수량</label>
+        <input type="text" id="quantity" name="quantity" class="form-control" value="10" th:value="${food.quantity}" readonly>
+    </div>
+    <div>
+        <label for="quantityUnit">단위</label>
+        <input type="text" id="quantityUnit" name="quantityUnit" class="form-control" value="10000" th:value="${food.quantityUnit}" readonly>
+    </div>
+    <div>
+        <label for="expDate">유통기한</label>
+        <input type="text" id="expDate" name="expDate" class="form-control" value="2021.01.01" th:value="${food.expDate}" readonly>
+    </div>
+
+    <hr class="my-4">
+
+    <hr class="my-4">
+
+    <!-- single checkbox -->
+    <div>알람 여부</div>
+    <div>
+        <div class="form-check">
+            <input type="checkbox" id="alarm" th:field="${food.alarm}" class="formcheck-input" disabled>
+            <label for="alarm" class="form-check-label">알람 받음</label>
+        </div>
+    </div>
+
+    <div>
+        <div>식품 종류</div>
+        <div th:each="type : ${foodTypes}" class="form-check form-check-inline">
+            <input type="radio" th:field="${food.foodType}" th:value="${type.name()}"
+                   class="form-check-input" disabled>
+            <label th:for="${#ids.prev('foodType')}" th:text="${type.description}"
+                   class="form-check-label">
+                BOOK
+            </label>
+        </div>
+    </div>
+
+    <!-- SELECT -->
+    <div>
+        <div>저장 방식</div>
+        <select th:field="${food.storageCode}" class="form-select" disabled>
+            <option value="">==저장 방식 선택==</option>
+            <option th:each="storageCode : ${storageCodes}" th:value="${storageCode.code}"
+                    th:text="${storageCode.displayName}">FAST</option>
+        </select>
+    </div>
+    <hr class="my-4">
+    
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg"
+                    onclick="location.href='editForm.html'"
+                    th:onclick="|location.href='@{/form/foods/{foodId}/edit(foodId=${food.id})}'|"
+                    type="button">식품 수정</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    onclick="location.href='foods.html'"
+                    th:onclick="|location.href='@{/form/foods}'|"
+                    type="button">목록으로</button>
+        </div>
+    </div>
+
+</div> <!-- /container -->
+</body>
+</html>
